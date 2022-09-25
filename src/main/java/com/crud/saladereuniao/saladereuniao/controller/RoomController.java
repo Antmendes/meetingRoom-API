@@ -22,6 +22,9 @@ import com.crud.saladereuniao.saladereuniao.exception.ResourceNotFoundException;
 import com.crud.saladereuniao.saladereuniao.model.Room;
 import com.crud.saladereuniao.saladereuniao.repository.RoomRepository;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 
 
 
@@ -31,17 +34,20 @@ import com.crud.saladereuniao.saladereuniao.repository.RoomRepository;
 
 @RestController @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/v1")
+@Api(tags = "Room Controller")
 public class RoomController {
 	
 	@Autowired
 	private RoomRepository roomRepository;
 	
 	@GetMapping("/rooms")
+	@ApiOperation("Find all rooms")
 	public List<Room> getAllRooms(){
 		return roomRepository.findAll();
 	}
 	
 	@GetMapping("/rooms/{id}")
+	@ApiOperation("Find one room")
 	public ResponseEntity<Room> getRoomById(@PathVariable(value = "id") long roomId)
 		throws ResourceNotFoundException{
 			Room room = roomRepository.findById(roomId)
@@ -51,11 +57,13 @@ public class RoomController {
 	
 	
 	@PostMapping("/rooms")
+	@ApiOperation("create room")
 	public Room createRoom(@Valid @RequestBody Room room) {
 		return roomRepository.save(room);
 	}
 	
 	@PutMapping("/rooms/{id}")
+	@ApiOperation("Update room")
 	public ResponseEntity<Room> updateRoom(@PathVariable(value ="id") long roomId,
 			@Valid @RequestBody Room roomDetails) throws ResourceNotFoundException{
 		Room room = roomRepository.findById(roomId)
@@ -70,6 +78,7 @@ public class RoomController {
 	
 	
 	@DeleteMapping("/rooms/{id}")
+	@ApiOperation("Delete room")
 	public Map<String, Boolean> deleteRoom(@PathVariable(value = "id") long roomId)
 	throws ResourceNotFoundException{
 		Room room = roomRepository.findById(roomId)
